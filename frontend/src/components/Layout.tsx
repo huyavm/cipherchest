@@ -1,0 +1,14 @@
+import { Sidebar } from './Sidebar';
+import { useAutoLogout } from '../hooks/useAutoLogout';
+
+export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  useAutoLogout();
+  return (
+    <div className="flex min-h-screen bg-slate-950 text-slate-100">
+      <Sidebar />
+      <main className="flex-1 p-6 overflow-y-auto">
+        {children}
+      </main>
+    </div>
+  );
+};

@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: cipherchest-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./attachments:/app/attachments
+      - ./backups:/app/backups
+      - ./app.db:/app/app.db
+      - ./security.log:/app/security.log
+    networks:
+      - cipherchest-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cipherchest-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - cipherchest-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: cipherchest-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - cipherchest-network
+
+networks:
+  cipherchest-network:
+    driver: bridge
