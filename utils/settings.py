@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     smtp_user: str | None = None
     smtp_password: str | None = None
     smtp_sender: str | None = None
+    admin_email: str = Field(default="admin@local")
+    admin_password: str = Field(default="ChangeMe123!")
 
     class Config:
         env_file = ".env"
