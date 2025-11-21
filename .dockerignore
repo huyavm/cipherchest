@@ -11,6 +11,8 @@ dist/
 build/
 venv/
 env/
+**/node_modules
+
 
 # Database
 *.db
