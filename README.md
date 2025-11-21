@@ -57,19 +57,28 @@ npm run dev # http://localhost:5173 with proxy to the API
 
 ## Docker
 
-### Development
-```bash
-cp .env.example .env
-docker-compose up --build
-```
+### Production Deployment (aaPanel)
 
-### Production (aaPanel)
-See **DEPLOY_DOCKER.md** for detailed instructions.
+See deployment guides:
+- **DEPLOY_AAPANEL_DOCKER.md** - Deploy with Docker on aaPanel (Recommended)
+- **QUICK_DEPLOY_AAPANEL.md** - Quick start guide
+- **DEPLOYMENT_INDEX.md** - Compare all deployment methods
 
 Quick start:
 ```bash
-chmod +x docker-deploy.sh
-./docker-deploy.sh
+# 1. Build frontend
+cd frontend
+npm install
+npm run build
+
+# 2. Create data directory
+mkdir -p data ssl
+
+# 3. Copy SSL certificates to ssl/
+# fullchain.pem and privkey.pem
+
+# 4. Start containers
+docker-compose up -d
 ```
 
 Access:
@@ -77,11 +86,12 @@ Access:
 - Backend API: `https://your-domain.com/api`
 - API Docs: `https://your-domain.com/docs`
 
-## Deployment
+## Deployment Guides
 
-- **DEPLOY_DOCKER.md** - Deploy with Docker on aaPanel (Recommended)
-- **DEPLOY_AAPANEL.md** - Manual deploy on aaPanel
-- **DEPLOY_QUICK.md** - Quick reference guide
+- **DEPLOY_AAPANEL_DOCKER.md** - Full Docker deployment guide for aaPanel
+- **QUICK_DEPLOY_AAPANEL.md** - Quick reference for aaPanel deployment
+- **DEPLOYMENT_INDEX.md** - Deployment methods comparison
+- **DEPLOY_AAPANEL.md** - Manual deployment (without Docker)
 
 ## Environment Variables
 

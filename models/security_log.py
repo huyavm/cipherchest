@@ -13,7 +13,7 @@ class SecurityLog(Base):
     action = Column(String(100), nullable=False)
     ip_address = Column(String(100), nullable=True)
     user_agent = Column(String(255), nullable=True)
-    metadata = Column(Text, nullable=True)
+    log_metadata = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", back_populates="logs")

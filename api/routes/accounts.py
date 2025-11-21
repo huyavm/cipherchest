@@ -37,7 +37,7 @@ def list_accounts(
 @router.post("", response_model=AccountRead, dependencies=[Depends(csrf_protect)])
 def create_account(payload: AccountCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):
     account = account_service.create_account(db, owner_id=user.id, payload=payload)
-    log_event(db, "account_created", user_id=user.id, metadata=f\"account:{account.id}\")
+    log_event(db, "account_created", user_id=user.id, metadata=f"account:{account.id}")
     return account_service.to_schema(account)
 
 
@@ -50,12 +50,12 @@ def get_account(account_id: int, db: Session = Depends(get_db), user=Depends(get
 @router.put("/{account_id}", response_model=AccountRead, dependencies=[Depends(csrf_protect)])
 def update_account(account_id: int, payload: AccountUpdate, db: Session = Depends(get_db), user=Depends(get_current_user)):
     account = account_service.update_account(db, user.id, account_id, payload)
-    log_event(db, "account_updated", user_id=user.id, metadata=f\"account:{account.id}\")
+    log_event(db, "account_updated", user_id=user.id, metadata=f"account:{account.id}")
     return account_service.to_schema(account)
 
 
 @router.delete("/{account_id}", dependencies=[Depends(csrf_protect)])
 def delete_account(account_id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
     account_service.delete_account(db, user.id, account_id)
-    log_event(db, "account_deleted", user_id=user.id, metadata=f\"account:{account_id}\")
+    log_event(db, "account_deleted", user_id=user.id, metadata=f"account:{account_id}")
     return {"status": "deleted"}
